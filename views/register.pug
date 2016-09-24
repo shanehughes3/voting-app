@@ -1,0 +1,17 @@
+html
+	head
+		title Register
+	body
+		h1 Register
+		form(action="/register" method="post")
+			div
+				label Username:
+				input(type="text" name="username")
+			div
+				label Password:
+				input(type="password" name="password")
+			div
+				label Re-type password:
+				input(type="password" name="verify")
+			div
+				input(type="submit" value="Register")
