@@ -5,13 +5,15 @@ const passport = require("passport"),
       User = db.user;
 
 exports.register = function(req, res, cb) {
+    debugger;
     User.register(new User({
 	username: req.body.username
     }), req.body.password, function(err, user) {
 	if (err) {
 	    console.log(err);
 	    cb(err);
+	} else {
+	    cb(null, user);
 	}
-	cb(null, user);
     });
 }

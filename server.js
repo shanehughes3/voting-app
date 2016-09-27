@@ -4,12 +4,14 @@ const express = require("express"),
       LocalStrategy = require("passport-local").Strategy,
       bodyParser = require("body-parser"),
       session = require("express-session"),
+      morgan = require("morgan"),
       routes = require("./routes/tasks.js"),
       config = require("./config.js"),
       db = require("./db.js"),
       User = db.user,
       auth = require("./auth.js");
 
+app.use(morgan("dev"));
 app.use(session({
     secret: config.secret,
     resave: true,

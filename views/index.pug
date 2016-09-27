@@ -1,12 +1,7 @@
-html
-	head
-		title Vote
-	body
-		h1 Welcome
-		p
-			a(href="/login") Log In
-		p
-			a(href="/register") Register
-		p
-			a(href="/logout") Log Out
-		p Hello, #{user}
+extends layout.pug
+
+block title
+      title Voting App
+
+block content
+      h1 Vote here

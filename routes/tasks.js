@@ -18,7 +18,19 @@ exports.getRegister = function(req, res, next) {
 
 exports.postRegister = function(req, res, next) {
     auth.register(req, res, function(err, user) {
-	res.redirect(307, "/login");
+	if (err) {
+	    if (err.name = "UserExistsError") {
+		res.render("register", {
+		    message: "Sorry, that username is already taken."
+		});
+	    } else {
+		res.render("register", {
+		    message: "Sorry, an unknown error occurred."
+		});
+	    }
+	} else {
+	    res.redirect(307, "/login");
+	}
     });
 }
 

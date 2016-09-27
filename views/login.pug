@@ -1,16 +1,28 @@
-html
-	head
-		title Login
-	body
-		h1 Login
-		form(action="/login" method="post")
-			div
-				label Username:
-				input(type="text" name="username")
-			div
-				label Password:
-				input(type="password" name="password")
-			div
-				input(type="submit" value="Log In")
-			div
-				#{message}
+extends layout.pug
+block title
+	title Login
+block content
+	h1 Login
+	form(
+		action="/login"
+		method="post"
+		onsubmit="return verifyLoginSubmit()"
+	)
+		div
+			label Username:
+			input(
+				type="text"
+				name="username"
+				id="username-field"
+			)
+		div
+			label Password:
+			input(
+				type="password"
+				name="password"
+				id="password-field"
+			)
+		div
+			input(type="submit" value="Log In")
+		div(id="message")
+			#{message}

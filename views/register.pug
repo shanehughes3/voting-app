@@ -1,17 +1,35 @@
-html
-	head
-		title Register
-	body
-		h1 Register
-		form(action="/register" method="post")
-			div
-				label Username:
-				input(type="text" name="username")
-			div
-				label Password:
-				input(type="password" name="password")
-			div
-				label Re-type password:
-				input(type="password" name="verify")
-			div
-				input(type="submit" value="Register")
+extends layout.pug
+block title
+	title Register
+block content
+	h1 Register
+	form(
+		action="/register"
+		method="post"
+		onsubmit="return verifyRegisterSubmit()"
+	)
+		div
+			label Username:
+			input(
+				type="text"
+				name="username"
+				id="username-field"
+			)
+		div
+			label Password:
+			input(
+				type="password"
+				name="password"
+				id="password-field"
+			)
+		div
+			label Re-type password:
+			input(
+				type="password"
+				name="verify"
+				id="verify-field"
+			)
+		div
+			input(type="submit" value="Register")
+	div(id="message")
+		| #{message}
