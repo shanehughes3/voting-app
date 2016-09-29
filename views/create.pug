@@ -1,7 +1,48 @@
 extends layout.pug
+
 block title
-      title Create new poll
+	title Create new poll
+
 block content
-      h1 Create a new poll
-      form(action="/create" method="/post")
-      
+	h1 Create a new poll
+	form(
+		action="/create"
+		method="post"
+		onsubmit="return verifyNewPollSubmit()"
+	)
+		div
+			label Question:
+			input(
+				type="text"
+				name="title"
+				id="question-field"
+				autofocus
+			)
+		div(id="options-container")
+			div(id="model-create-field")
+				label Option:
+				input(
+					type="text"
+					name="options"
+					class="option-field"
+				)
+			div
+				label Option:
+				input(
+					type="text"
+					name="options"
+					class="option-field"
+				)
+		div
+			input(
+				type="button"
+				value="Add another option"
+				id="add-button"
+				onclick="addCreateField()"
+			)
+			input(
+				type="submit"
+				value="Sumbit"
+			)
+		div(id="message")
+			| #{message}

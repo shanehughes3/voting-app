@@ -1,0 +1,24 @@
+extends layout.pug
+
+block title
+	title Delete
+
+block content
+	div
+		h2 Are you sure?
+	div
+		| This will delete the following poll:
+	div
+		h4 #{poll.title}
+	div
+		| Are you sure? This action cannot be undone.
+	div
+		form(action="/delete" method="post")
+			input(type="hidden" name="id" value=`${poll._id}`)
+			input(type="hidden" name="user" value=`${user}`)
+			input(type="submit" value="Yes")
+			input(
+				type="button"
+				value="No"
+				onclick="window.location.href='/profile';"
+			)

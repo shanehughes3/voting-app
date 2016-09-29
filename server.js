@@ -5,7 +5,7 @@ const express = require("express"),
       bodyParser = require("body-parser"),
       session = require("express-session"),
       morgan = require("morgan"),
-      routes = require("./routes/tasks.js"),
+      router = require("./routes/tasks.js"),
       config = require("./config.js"),
       db = require("./db.js"),
       User = db.user,
@@ -22,20 +22,11 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "pug");
 
-app.get("/", routes.index);
-app.get("/login", routes.getLogin);
-app.post("/login", passport.authenticate("local", {
-	 successRedirect: "/",
-	 failureRedirect: "/login"  // figure out {message: incorrect}
-}));
-app.get("/register", routes.getRegister);
-app.post("/register", routes.postRegister);
-app.get("/logout", routes.logout);
+app.use(router);
 
 app.listen(config.port);

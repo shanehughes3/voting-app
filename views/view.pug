@@ -1,0 +1,40 @@
+extends layout.pug
+
+block title
+	title View poll
+
+block content
+	div
+		| #{message}
+	if vote
+		div
+			h2 #{poll.title}
+		form(action="/vote" method="post")
+			input(
+				type="hidden"
+				name="id"
+				value=`${poll._id}`
+			)
+			each option in poll.options
+				input(
+					type="radio"
+					name="option"
+					value=`${option._id}`
+				)
+				label #{option.option}
+			input(
+				type="submit"
+				value="Submit"
+				onclick="return verifyVoteCompletion()"
+			)
+			
+	else if poll
+		div
+			h2 #{poll.title}
+		div
+			each option in poll.options
+				div
+					| #{option.option} - #{option.votes}
+	if edit
+		div
+			a(href=`/delete/${poll._id}`) Delete this poll

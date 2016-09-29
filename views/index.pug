@@ -1,7 +1,18 @@
 extends layout.pug
 
 block title
-      title Voting App
+	title Voting App
 
 block content
-      h1 Vote here
+	h2 Recent Polls
+	if polls
+		each poll in polls
+			div
+				span
+					a(
+						href=`/view/${poll._id}`
+					) #{poll.title}
+				span
+					| #{poll.owner}
+	div
+		| #{message}

@@ -1,0 +1,15 @@
+extends layout.pug
+
+block title
+	title My polls
+
+block content
+	h1 #{user}'s Polls
+	if polls
+		each poll in polls
+			div
+				a(href=`/view/${poll._id}`) #{poll.title}	
+		
+	else
+		div
+			| #{message}
