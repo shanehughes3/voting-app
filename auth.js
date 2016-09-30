@@ -7,7 +7,8 @@ const passport = require("passport"),
 exports.register = function(req, res, cb) {
     debugger;
     User.register(new User({
-	username: req.body.username
+	username: req.body.username,
+	votes: req.session.votes
     }), req.body.password, function(err, user) {
 	if (err) {
 	    console.log(err);

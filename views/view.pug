@@ -27,10 +27,14 @@ block content
 				value="Submit"
 				onclick="return verifyVoteCompletion()"
 			)
-			
-	else if poll
+
+	if poll
 		div
 			h2 #{poll.title}
+		if !vote
+			div
+				| Thanks for voting!
+				
 		div
 			each option in poll.options
 				div
