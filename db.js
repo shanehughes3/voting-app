@@ -68,7 +68,7 @@ exports.createPoll = function(req, cb) {
     }
 }
 
-exports.retrievePoll = function(pollID, cb) {
+exports.retrievePoll = function(pollID, sessionVotes, user, cb) {
     Poll.findOne({
 	_id: pollID
     }, "title options _id owner", function(err, poll) {
@@ -77,7 +77,7 @@ exports.retrievePoll = function(pollID, cb) {
 	} else if (poll == null) {
 	    returnNoResults(cb);
 	} else {
-	    cb(null, poll);
+	    checkClientVote(poll, sessionVotes, user, cb);
 	}
     });
 }
@@ -109,7 +109,37 @@ exports.retrieveRecentPolls = function(cb) {
 		  }
 	      });
 }
-/* FIX
+
+function checkClientVote(poll, sessionVotes, user, cb) {
+    if (user) {
+	if (user.username = poll.owner) {
+	    cb(null, poll, true);
+	} else {
+	    checkUserVote(user._id, poll, cb);
+	}
+    } else {
+	if (sessionVotes.indexOf(poll._id) == -1) {
+	    cb(null, poll, false);
+	} else {
+	    cb(null, poll, true);
+	}
+    }
+}
+
+function checkUserVote(userID, poll, cb) {
+    User.findOne({
+	_id: userID
+    }, "votes", function(err, votes) {
+	if (err) {
+	    cb(err);
+	} else if (votes.indexOf(pollID) == -1) {
+	    cb(null, poll, false);
+	} else {
+	    cb(null, poll, true);
+	}
+    });
+}
+
 function recordUserVote(userID, pollID, cb) {
     User.findOneAndUpdate({
 	_id: userID
@@ -124,21 +154,30 @@ function recordUserVote(userID, pollID, cb) {
     });
 }
 
-exports.vote = function(pollID, optionID, userID, cb) {
-    Poll.findOneAndUpdate({
-	_id: pollID,
-	options._id: optionID
+function recordSessionVote(req, pollID, cb) {
+    req.session.votes.push(pollID);
+    cb(null);
+}
+
+exports.vote = function(req, cb) {
+    Poll.update({
+	_id: req.body.id,
+	"options._id": req.body.option
     }, {
-	$inc: { options.$.votes: 1 }
+	$inc: { "options.$.votes": 1 }
     }, function(err, doc) {
 	if (err) {
 	    cb(err);
 	} else {
-	    recordUserVote(userID, pollID, cb);
+	    if (req.user) {
+		recordUserVote(req.user._id, req.body.id, cb);
+	    } else {
+		recordSessionVote(req, req.body.id, cb);
+	    }
 	}
-    }
+    });
 }
-*/
+
 exports.deletePoll = function(pollID, cb) {
     Poll.findOneAndRemove({
 	_id: pollID

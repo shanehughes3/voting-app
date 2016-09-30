@@ -145,33 +145,26 @@ function handlePollViewErrors(err, res) {
 }
 
 router.get("/view/:pollID", function(req, res, next) {
-    db.retrievePoll(req.params.pollID, function(err, poll) {
+    db.retrievePoll(req.params.pollID, req.session.votes,
+		    req.user, function(err, poll, voted) {
 	if (err) {
 	    handlePollViewErrors(err, res);
-	} else {
-	    var locals = {};
+	} else {	    
+	    var locals = {
+		poll: poll,
+		user: (req.user) ? req.user.username : null,
+		vote: !voted
+	    };
 	    if (req.user && req.user.username == poll.owner) {
-		locals = {
-		    poll: poll,
-		    edit: true,
-		    vote: false,
-		    user: req.user.username
-		}
-	    } else {
-		locals = {
-		    poll: poll,
-		    vote: true,
-		    user: (req.user) ? req.user.username : null
-		}
+		locals.edit = true;
 	    }
 	    res.render("view", locals);
-	} // TODO - check whether user has already voted
+	} 
     });
 });
 
 router.post("/vote", function(req, res, next) {
-    db.vote(req.body.id, req.body.option, req.user.username,
-	    function(err) {
+    db.vote(req, function(err) {
 		if (err) {
 		    console.log("err");
 		    res.send("error");

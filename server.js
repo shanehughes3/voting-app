@@ -24,6 +24,13 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 app.use(bodyParser.urlencoded({extended: false}));
 
+app.use(function(req, res, next) {
+    if (!req.session.votes) {
+	req.session.votes = [];
+    }
+    next();
+});
+
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "pug");
 
