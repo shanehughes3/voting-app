@@ -1,30 +1,13 @@
 const config = require("./config.js"),
       mongoose = require("mongoose"),
       Schema = mongoose.Schema,
-      passportLocalMongoose = require("passport-local-mongoose"),
       shortid = require("shortid");
 
 mongoose.Promise = global.Promise; // silence DeprecationWarning
 
 const db = mongoose.connect(config.db);
 
-// USER REGISTRATION
-var User = new Schema({});
-User.plugin(passportLocalMongoose);
-User.add({ votes: [] });
-
-exports.user = mongoose.model("User", User);
-
-// POLL CREATE/RETRIEVE/DELETE
-var pollSchema = new Schema({
-    _id: {type: String, "default": shortid.generate},
-    title: String,
-    options: [{option: String, votes: Number}],
-    owner: String
-});
-
-var Poll = mongoose.model("Poll", pollSchema);
-
+// PRIVATE FUNCTIONS
 function returnNoResults(cb) {
     var e = new Error("No results found");
     e.name = "NoResults";
@@ -48,6 +31,66 @@ function sanitizeNewPollRequest(req, cb) {
     }    
 }
 
+function checkClientVote(poll, sessionVotes, user, cb) {
+    if (user) {
+	if (user.username = poll.owner) {
+	    cb(null, poll, true);
+	} else {
+	    checkUserVote(user._id, poll, cb);
+	}
+    } else {
+	if (sessionVotes.indexOf(poll._id) == -1) {
+	    cb(null, poll, false);
+	} else {
+	    cb(null, poll, true);
+	}
+    }
+}
+
+function checkUserVote(userID, poll, cb) {
+    User.findOne({
+	_id: userID
+    }, "votes", function(err, votes) {
+	if (err) {
+	    cb(err);
+	} else if (votes.indexOf(pollID) == -1) {
+	    cb(null, poll, false);
+	} else {
+	    cb(null, poll, true);
+	}
+    });
+}
+
+function recordUserVote(userID, pollID, cb) {
+    User.findOneAndUpdate({
+	_id: userID
+    }, {
+	$push: { votes: pollID }
+    }, function(err, doc) {
+	if (err) {
+	    cb(err);
+	} else {
+	    cb(null);
+	}
+    });
+}
+
+function recordSessionVote(req, pollID, cb) {
+    req.session.votes.push(pollID);
+    cb(null);
+}
+
+// POLL MODEL
+var pollSchema = new Schema({
+    _id: {type: String, "default": shortid.generate},
+    title: String,
+    options: [{option: String, votes: Number}],
+    owner: String
+});
+
+var Poll = mongoose.model("Poll", pollSchema);
+
+// POLL CREATE/RETRIEVE
 exports.createPoll = function(req, cb) {
     if (sanitizeNewPollRequest(req, cb)) {
 	var options = req.body.options;
@@ -110,55 +153,7 @@ exports.retrieveRecentPolls = function(cb) {
 	      });
 }
 
-function checkClientVote(poll, sessionVotes, user, cb) {
-    if (user) {
-	if (user.username = poll.owner) {
-	    cb(null, poll, true);
-	} else {
-	    checkUserVote(user._id, poll, cb);
-	}
-    } else {
-	if (sessionVotes.indexOf(poll._id) == -1) {
-	    cb(null, poll, false);
-	} else {
-	    cb(null, poll, true);
-	}
-    }
-}
-
-function checkUserVote(userID, poll, cb) {
-    User.findOne({
-	_id: userID
-    }, "votes", function(err, votes) {
-	if (err) {
-	    cb(err);
-	} else if (votes.indexOf(pollID) == -1) {
-	    cb(null, poll, false);
-	} else {
-	    cb(null, poll, true);
-	}
-    });
-}
-
-function recordUserVote(userID, pollID, cb) {
-    User.findOneAndUpdate({
-	_id: userID
-    }, {
-	$push: { votes: pollID }
-    }, function(err, doc) {
-	if (err) {
-	    cb(err);
-	} else {
-	    cb(null);
-	}
-    });
-}
-
-function recordSessionVote(req, pollID, cb) {
-    req.session.votes.push(pollID);
-    cb(null);
-}
-
+// VOTE
 exports.vote = function(req, cb) {
     Poll.update({
 	_id: req.body.id,
@@ -178,6 +173,7 @@ exports.vote = function(req, cb) {
     });
 }
 
+// DELETE
 exports.deletePoll = function(pollID, cb) {
     Poll.findOneAndRemove({
 	_id: pollID

@@ -5,11 +5,12 @@ const express = require("express"),
       bodyParser = require("body-parser"),
       session = require("express-session"),
       morgan = require("morgan"),
-      router = require("./routes/tasks.js"),
+      userRoutes = require("./routes/user.js"),
+      pollRoutes = require("./routes/poll.js"),
       config = require("./config.js"),
       db = require("./db.js"),
-      User = db.user,
-      auth = require("./auth.js");
+      auth = require("./auth.js"),
+      User = auth.user;
 
 app.use(morgan("dev"));
 app.use(session({
@@ -34,6 +35,7 @@ app.use(function(req, res, next) {
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "pug");
 
-app.use(router);
+app.use(userRoutes);
+app.use(pollRoutes);
 
 app.listen(config.port);

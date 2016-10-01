@@ -1,8 +1,17 @@
 const passport = require("passport"),
       LocalStrategy = require("passport-local").Strategy,
       mongoose = require("mongoose"),
-      db = require("./db.js"),
-      User = db.user;
+      Schema = mongoose.Schema,
+      passportLocalMongoose = require("passport-local-mongoose"),
+      db = require("./db.js");
+
+// USER REGISTRATION
+var UserSchema = new Schema({});
+UserSchema.plugin(passportLocalMongoose);
+UserSchema.add({ votes: [] });
+
+var User = mongoose.model("User", UserSchema);
+exports.user = User;
 
 exports.register = function(req, res, cb) {
     debugger;
