@@ -1,0 +1,26 @@
+
+
+
+// CHART
+.chart rect {
+    fill: blue;
+}
+
+.tooltip {
+    position: absolute;
+    text-align: center;
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 5px;
+    transform: translate(-50%, 0);
+    padding: 5px;
+}
+
+.xaxis path,
+.xaxis line,
+.yaxis path,
+.yaxis line {
+    fill: none;
+    stroke: black;
+    stroke-width: 1;
+}

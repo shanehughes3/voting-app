@@ -1,7 +1,9 @@
 const config = require("./config.js"),
       mongoose = require("mongoose"),
       Schema = mongoose.Schema,
-      shortid = require("shortid");
+      shortid = require("shortid"),
+      auth = require("./auth.js"),
+      User = auth.user;
 
 mongoose.Promise = global.Promise; // silence DeprecationWarning
 
@@ -33,7 +35,7 @@ function sanitizeNewPollRequest(req, cb) {
 
 function checkClientVote(poll, sessionVotes, user, cb) {
     if (user) {
-	if (user.username = poll.owner) {
+	if (user.username == poll.owner) {
 	    cb(null, poll, true);
 	} else {
 	    checkUserVote(user._id, poll, cb);
@@ -50,10 +52,10 @@ function checkClientVote(poll, sessionVotes, user, cb) {
 function checkUserVote(userID, poll, cb) {
     User.findOne({
 	_id: userID
-    }, "votes", function(err, votes) {
+    }, "votes", function(err, user) {
 	if (err) {
 	    cb(err);
-	} else if (votes.indexOf(pollID) == -1) {
+	} else if (user.votes.indexOf(poll._id) == -1) {
 	    cb(null, poll, false);
 	} else {
 	    cb(null, poll, true);

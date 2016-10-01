@@ -29,16 +29,20 @@ block content
 			)
 
 	if poll
-		div
-			h2 #{poll.title}
 		if !vote
 			div
-				| Thanks for voting!
+				h2 #{poll.title}
+			if !edit
+				div
+					| Thanks for voting!
 				
 		div
-			each option in poll.options
-				div
-					| #{option.option} - #{option.votes}
+			svg(class="chart")
 	if edit
 		div
 			a(href=`/delete/${poll._id}`) Delete this poll
+			
+	input(type="hidden" id="poll-data" value= JSON.stringify(poll))
+	script(src="http://d3js.org/d3.v3.min.js" type="text/javascript")
+	script(src="/chart.js" type="text/javascript")
+	
