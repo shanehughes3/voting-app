@@ -70,13 +70,11 @@ router.get("/view/:pollID", function(req, res, next) {
 
 router.post("/vote", function(req, res, next) {
     db.vote(req, function(err) {
-		if (err) {
-		    console.log("err");
-		    res.send("error");
-		} else {
-		    res.redirect("/view/" + req.body.id);
-		}
-	    });
+	if (err) {
+	    console.log(err);
+	}
+	res.redirect("/view/" + req.body.id);
+    });
 });
 
 // DELETE POLL

@@ -27,9 +27,21 @@ block content
 								value=`${option._id}`
 							)
 							label #{option.option}
+					if user
+						div(class="vote-form-option")
+							input(
+								type="radio"
+								name="option"
+								value="new-option"
+							)
+							input(
+								type="text"
+								name="newOption"
+								class="input-field"
+							)
 					input(
 						type="submit"
-						value="Submit"
+						value="Vote"
 						class="button"
 						onclick="return verifyVoteCompletion()"
 					)
@@ -38,8 +50,25 @@ block content
 		div(class="chart-container")
 			svg(class="chart")
 		if edit
-			div(class="delete")
-				a(href=`/delete/${poll._id}`) Delete this poll
+			div(class="edit-buttons")
+				input(
+					type="button"
+					class="button"
+					value="Share on Facebook"
+					onclick="window.location.href='https://facebook.com/sharer/sharer.php?u=' + document.URL;"
+				)
+				input(
+					type="button"
+					class="button"
+					value="Share on Twitter"
+					onclick="window.location.href='https://twitter.com/home?status=' + document.URL;"
+				)
+				input(
+					type="button"
+					class="button"
+					value="Delete Poll"
+					onclick=`window.location.href='/delete/${poll._id}';`
+				)
 			
 		input(type="hidden" id="poll-data" value= JSON.stringify(poll))
 		script(src="http://d3js.org/d3.v3.min.js" type="text/javascript")

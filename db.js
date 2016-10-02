@@ -96,7 +96,7 @@ var Poll = mongoose.model("Poll", pollSchema);
 exports.createPoll = function(req, cb) {
     if (sanitizeNewPollRequest(req, cb)) {
 	var options = req.body.options;
-	options = options.filter(o => o); // sanitize empty fields
+	options = options.filter(o => o); // purge empty fields
 	options = options.map(o => {return {option: o, votes: 0}});
 	var newPoll = new Poll({
 	    title: req.body.title,
@@ -164,14 +164,31 @@ exports.retrieveRecentPolls = function(offset, cb) {
 
 // VOTE
 exports.vote = function(req, cb) {
-    Poll.update({
-	_id: req.body.id,
-	"options._id": req.body.option
-    }, {
-	$inc: { "options.$.votes": 1 }
-    }, function(err, doc) {
+    if (req.body.option == "new-option" && req.body.newOption) {
+	// add new option and vote for it
+	Poll.update({
+	    _id: req.body.id,
+	}, {
+	    $push: {options: {
+		option: req.body.newOption,
+		votes: 1
+	    }}}, callback);
+    } else { // preexisting option
+	Poll.update({
+	    _id: req.body.id,
+	    "options._id": req.body.option
+	}, {
+	    $inc: { "options.$.votes": 1 }
+	}, callback);
+    }
+	
+    function callback(err, doc) {
 	if (err) {
 	    cb(err);
+	} else if (doc.nModified == 0) {
+	    var e = new Error("Vote was not recorded");
+	    e.name = "VoteError";
+	    cb(e);
 	} else {
 	    if (req.user) {
 		recordUserVote(req.user._id, req.body.id, cb);
@@ -179,7 +196,7 @@ exports.vote = function(req, cb) {
 		recordSessionVote(req, req.body.id, cb);
 	    }
 	}
-    });
+    }
 }
 
 // DELETE
