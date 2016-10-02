@@ -9,8 +9,22 @@ block content
 		each poll in polls
 			a(href=`/view/${poll._id}`)
 				div(class="list-poll-row")
-					span(class="list-poll-name") #{poll.title}	
-		
+					span(class="list-poll-name") #{poll.title}
+		div
+			if offset > 0
+				input(
+					type="button"
+					class="button"
+					value="Previous"
+					onclick=`window.location.href='/profile?offset=${offset - 20}';`
+				)
+			if more
+				input(
+					type="button"
+					class="button"
+					value="Next"
+					onclick=`window.location.href='/profile?offset=${offset + 20}';`
+				)
 	else
 		div(class="message")
 			| #{message}

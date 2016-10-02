@@ -14,5 +14,21 @@ block content
 						| #{poll.title}
 					span(class="list-poll-owner")
 						| #{poll.owner}
-	div(class="message")
-		| #{message}
+		div
+			if offset > 0
+				input(
+					type="button"
+					class="button"
+					value="Previous"
+					onclick=`window.location.href='/?offset=${offset - 20}';`
+				)
+			if more
+				input(
+					type="button"
+					class="button"
+					value="Next"
+					onclick=`window.location.href='/?offset=${offset + 20}';`
+				)
+	else
+		div(class="message")
+			| #{message}

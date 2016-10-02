@@ -7,15 +7,21 @@ const express = require("express"),
 // INDEX
 router.get("/", function(req, res, next) {
     var locals = {};
-    db.retrieveRecentPolls(function(err, polls) {
+    db.retrieveRecentPolls(req.query.offset || 0, function(err, polls) {
 	if (err) {
 	    if (err.name = "NoResults") {
 		locals.message = "Sorry, no recent polls were found";
 	    } else {
 		locals.message = "Sorry, an unknown error occurred";
 	    }
+	    res.render("index", locals);
 	} else {
 	    locals.polls = polls;
+	    locals.offset = req.query.offset || 0;
+	    if (polls.length == 21) {
+		locals.more = true;
+		polls.pop();
+	    }
 	    if (req.user) {
 		locals.user = req.user.username;
 	    }
@@ -76,9 +82,10 @@ router.get("/logout", function(req, res, next) {
 // PROFILE
 router.get("/profile", function(req, res, next) {
     if (req.user) {
-	db.retrieveUserPolls(req.user.username, function(err, polls) {
+	var locals = { user: req.user.username };
+	db.retrieveUserPolls(req.user.username, req.query.offset || 0,
+			     function(err, polls) {
 	    if (err) {
-		var locals = {user: req.user.username};
 		if (err.name = "NoResults") {
 		    locals.message = "You don't have any polls yet";
 		} else {
@@ -86,10 +93,13 @@ router.get("/profile", function(req, res, next) {
 		}
 		res.render("profile", locals);
 	    } else {
-		res.render("profile", {
-		    user: req.user.username,
-		    polls: polls
-		});
+		locals.polls = polls;
+		locals.offset = req.query.offset || 0;
+		if (polls.length == 21) {
+		    locals.more = true;
+		    polls.pop();
+		}
+		res.render("profile", locals);
 	    }
 	});
     } else {

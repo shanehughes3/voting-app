@@ -88,7 +88,7 @@ var pollSchema = new Schema({
     title: String,
     options: [{option: String, votes: Number}],
     owner: String
-});
+}, { timestamps: true });
 
 var Poll = mongoose.model("Poll", pollSchema);
 
@@ -127,10 +127,14 @@ exports.retrievePoll = function(pollID, sessionVotes, user, cb) {
     });
 }
 
-exports.retrieveUserPolls = function(user, cb) {
+exports.retrieveUserPolls = function(user, offset, cb) {
     Poll.find({
 	owner: user
-    }, "title _id", function(err, polls) {
+    }, "title _id", {
+	sort: {"createdAt": -1},
+	skip: parseInt(offset),
+	limit: 21
+    }, function(err, polls) {
 	if (err) {
 	    cb(err);
 	} else if (polls.length == 0) {
@@ -141,9 +145,12 @@ exports.retrieveUserPolls = function(user, cb) {
     });
 }
 
-exports.retrieveRecentPolls = function(cb) {
+exports.retrieveRecentPolls = function(offset, cb) {
     Poll.find({}, "title _id owner",
-	      { limit: 20 }, 
+	      { skip: parseInt(offset),
+		limit: 21,
+		sort: {"createdAt": -1}
+	      }, 
 	      function(err, polls) {
 		  if (err) {
 		      cb(err);
