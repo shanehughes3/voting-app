@@ -13,6 +13,7 @@ block content
 		div
 			label Question:
 			input(
+				class="input-field"
 				type="text"
 				name="title"
 				id="question-field"
@@ -24,18 +25,19 @@ block content
 				input(
 					type="text"
 					name="options"
-					class="option-field"
+					class="option-field input-field"
 				)
 			div
 				label Option:
 				input(
 					type="text"
 					name="options"
-					class="option-field"
+					class="option-field input-field"
 				)
 		div
 			input(
 				type="button"
+				class="button"
 				value="Add another option"
 				id="add-button"
 				onclick="addCreateField()"
@@ -43,6 +45,7 @@ block content
 			input(
 				type="submit"
 				value="Sumbit"
+				class="button"
 			)
 		div(id="message")
 			| #{message}

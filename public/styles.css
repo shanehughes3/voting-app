@@ -1,18 +1,159 @@
 
 
+/* GLOBAL
+ */
+body {
+    background-color: #a1a3a9;
+    font-family: Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
+}
+a {
+    text-decoration: none;
+    color: #0b2256;
+}
+a:hover {
+    text-decoration: underline;
+}
+h1 {
+    color: #0b2256;
+}
+form {
+    color: #0b2256;
+}
+.content {
+    background-color: #d0d0d0;
+    margin: 8px;
+    padding: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 100%;
+}
+.button {
+    color: #0b2256;
+    background-color: #d0d0d0;
+    border: 2px solid #0b2256;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-right: 5px;
+}
+.button:hover {
+    color: #d0d0d0;
+    background-color: #0b2256;
+}
+.input-field {
+    background-color: #ebebeb;
+    border-radius: 5px;
+    border: 1px solid #0b2256;
+    margin-left: 10px;
+}
 
-// CHART
+/* MENU
+ */
+.top-bar {
+    background-color: #0b2256;
+    color: #a1a3a9;
+    width: 100%;
+}
+.top-bar-item {
+    padding: 10px;
+    display: inline-block;
+}
+.nav-link,
+.nav-link:visited {
+    text-decoration: none;
+    color: #a1a3a9;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+.top-bar-item:hover {
+    background-color: #a1a3a9;
+    color: #0b2256;
+}
+.collapsible-navbar {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.navbar-right {
+    float: right;
+}
+
+/* FOOTER
+ */
+.footer {
+    float: right;
+}
+.footer-line {
+    padding: 0;
+    margin: 0;
+    margin-right: 20px;
+    font-size: 0.8em;
+}
+.footer-line a {
+    text-decoration: none;
+    color: #091f52;
+}
+.footer-line a:hover {
+    text-decoration: underline;
+}
+
+/* LIST POLLS
+ */
+.list-poll-row {
+    padding: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 15px;
+    background-color: #a1a3a9;
+    border-radius: 10px;
+    color: #0b2256;
+}
+.list-poll-row:hover {
+    background-color: #0b2256;
+    color: #a1a3a9;
+}
+.list-poll-owner {
+    float: right;
+
+}
+.list-poll-name {
+    font-weight: bold;
+}
+
+/* VIEW
+ */
+.vote-form-container {
+    display: inline-block;
+    position: relative;
+    top: 0;
+    color: #0b2256;
+}
+.chart-container {
+    display: inline-block;
+    position: relative;
+    top: 0;
+    float: right;
+}
+.vote-form-option {
+    display: block;
+}
+
+/* CHART
+ */
 .chart rect {
-    fill: blue;
+    fill: #0b2256;
 }
 
 .tooltip {
     position: absolute;
     text-align: center;
-    border: 1px solid black;
-    background-color: white;
+    border: 1px solid #0b2256;
+    background-color: #d0d0d0;
     border-radius: 5px;
-    transform: translate(-50%, 0);
+    transform: translate(-50%, -10px);
     padding: 5px;
 }
 

@@ -11,6 +11,7 @@ block content
 		div
 			label Username:
 			input(
+				class="input-field"
 				type="text"
 				name="username"
 				id="username-field"
@@ -19,11 +20,16 @@ block content
 		div
 			label Password:
 			input(
+				class="input-field"
 				type="password"
 				name="password"
 				id="password-field"
 			)
 		div
-			input(type="submit" value="Log In")
+			input(
+				type="submit"
+				value="Log In"
+				class="button"
+			)
 		div(id="message")
 			| #{message}

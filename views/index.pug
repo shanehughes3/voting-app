@@ -4,15 +4,15 @@ block title
 	title Voting App
 
 block content
-	h2 Recent Polls
+	div(class="main-header")
+		h1 Recent Polls
 	if polls
 		each poll in polls
-			div
-				span
-					a(
-						href=`/view/${poll._id}`
-					) #{poll.title}
-				span
-					| #{poll.owner}
-	div
+			a(href=`/view/${poll._id}`)
+				div(class="list-poll-row")
+					span(class="list-poll-name")
+						| #{poll.title}
+					span(class="list-poll-owner")
+						| #{poll.owner}
+	div(class="message")
 		| #{message}

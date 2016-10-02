@@ -81,7 +81,7 @@ router.post("/vote", function(req, res, next) {
 
 // DELETE POLL
 router.get("/delete/:pollID", function(req, res, next) {
-    db.retrievePoll(req.params.pollID, function(err, poll) {
+    db.retrievePoll(req.params.pollID, [], null, function(err, poll) {
 	if (err) {
 	    handlePollViewErrors(err, res);
 	} else if (req.user && poll.owner == req.user.username) {

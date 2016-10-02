@@ -6,21 +6,33 @@ html
 		link(rel="stylesheet" type="text/css" href="/styles.css")
 	body
 		div(class="top-bar")
-			span(class="top-bar-item" id="home-link")
-				a(href="/") Home
-			if user
-				span(class="top-bar-item")
-					| Hello, 
-					a(href="/profile") #{user}
-				span(class="top-bar-item")
-					a(href="/create") New Poll
-				span(class="top-bar-item")
-					a(href="/logout") Log Out
-			else
-				span(class="top-bar-item")
-					a(href="/login") Log In
-				span(class="top-bar-item")
-					a(href="/Register") Register
-		div
+			a(href="/" class="nav-link")
+				span(class="top-bar-item" id="home-link") Home
+				
+			div(class="navbar-right")
+				if user
+					ul(class="collapsible-navbar")
+						a(href="/profile" class="nav-link")
+							li(class="top-bar-item") #{user}'s Polls
+						a(href="/create" class="nav-link")
+							li(class="top-bar-item") New Poll
+						a(href="/logout" class="nav-link")
+							li(class="top-bar-item") Log Out
+							
+				else
+					ul(class="collapsible-navbar")
+						a(href="/login" class="nav-link")
+							li(class="top-bar-item") Log In 
+						a(href="/Register" class="nav-link")
+							li(class="top-bar-item") Register
+							
+		div(class="content")
 			block content
+		div(class="footer")
+			p(class="footer-line") Created by 
+				a(href="https://github.com/shanehughes3") Shane Hughes
+			p(class="footer-line")
+				a(href="https://github.com/shanehughes3/voting-app")
+					| View the source 
+				| on GitHub
 		script(src="/scripts.js" type="text/javascript")

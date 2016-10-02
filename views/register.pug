@@ -11,6 +11,7 @@ block content
 		div
 			label Username:
 			input(
+				class="input-field"
 				type="text"
 				name="username"
 				id="username-field"
@@ -19,6 +20,7 @@ block content
 		div
 			label Password:
 			input(
+				class="input-field"
 				type="password"
 				name="password"
 				id="password-field"
@@ -26,11 +28,16 @@ block content
 		div
 			label Re-type password:
 			input(
+				class="input-field"
 				type="password"
 				name="verify"
 				id="verify-field"
 			)
 		div
-			input(type="submit" value="Register")
+			input(
+				type="submit"
+				value="Register"
+				class="button"
+			)
 	div(id="message")
 		| #{message}

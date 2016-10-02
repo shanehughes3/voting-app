@@ -9,7 +9,7 @@ function drawChart() {
 	top: 50,
 	bottom: 50
     };
-    const height = 500 - margin.top - margin.bottom,
+    const height = 400 - margin.top - margin.bottom,
 	  width = 500 - margin.left - margin.right;
 
     var pollData = document.getElementById("poll-data").value;

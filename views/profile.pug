@@ -7,9 +7,10 @@ block content
 	h1 #{user}'s Polls
 	if polls
 		each poll in polls
-			div
-				a(href=`/view/${poll._id}`) #{poll.title}	
+			a(href=`/view/${poll._id}`)
+				div(class="list-poll-row")
+					span(class="list-poll-name") #{poll.title}	
 		
 	else
-		div
+		div(class="message")
 			| #{message}

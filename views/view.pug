@@ -4,45 +4,44 @@ block title
 	title View poll
 
 block content
-	div
+	div(class="message")
 		| #{message}
-	if vote
-		div
-			h2 #{poll.title}
-		form(action="/vote" method="post")
-			input(
-				type="hidden"
-				name="id"
-				value=`${poll._id}`
-			)
-			each option in poll.options
-				input(
-					type="radio"
-					name="option"
-					value=`${option._id}`
-				)
-				label #{option.option}
-			input(
-				type="submit"
-				value="Submit"
-				onclick="return verifyVoteCompletion()"
-			)
-
 	if poll
-		if !vote
-			div
-				h2 #{poll.title}
-			if !edit
-				div
-					| Thanks for voting!
-				
-		div
+		div(class="vote-form-container")
+			h1 #{poll.title}
+			if !vote
+				if user != poll.owner
+					div(class="voting-thanks") Thanks for voting!
+			else
+				form(action="/vote" method="post")
+					input(
+						type="hidden"
+						name="id"
+						value=`${poll._id}`
+					)
+					each option in poll.options
+						div(class="vote-form-option")
+							input(
+								type="radio"
+								name="option"
+								value=`${option._id}`
+							)
+							label #{option.option}
+					input(
+						type="submit"
+						value="Submit"
+						class="button"
+						onclick="return verifyVoteCompletion()"
+					)
+
+
+		div(class="chart-container")
 			svg(class="chart")
-	if edit
-		div
-			a(href=`/delete/${poll._id}`) Delete this poll
+		if edit
+			div(class="delete")
+				a(href=`/delete/${poll._id}`) Delete this poll
 			
-	input(type="hidden" id="poll-data" value= JSON.stringify(poll))
-	script(src="http://d3js.org/d3.v3.min.js" type="text/javascript")
-	script(src="/chart.js" type="text/javascript")
+		input(type="hidden" id="poll-data" value= JSON.stringify(poll))
+		script(src="http://d3js.org/d3.v3.min.js" type="text/javascript")
+		script(src="/chart.js" type="text/javascript")
 	
