@@ -1,5 +1,5 @@
 module.exports = {
     db: process.env.MONGOLAB_URI,
     port: process.env.PORT || 8080,
-    secret: "cats"
+    secret: process.env.SESSION_SECRET || "cats"
 }
