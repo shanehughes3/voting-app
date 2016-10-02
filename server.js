@@ -12,7 +12,7 @@ const express = require("express"),
       auth = require("./auth.js"),
       User = auth.user;
 
-app.use(morgan("dev"));
+app.use(morgan("combined"));
 app.use(session({
     secret: config.secret,
     resave: true,

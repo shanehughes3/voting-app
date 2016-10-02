@@ -1,7 +1,7 @@
 # voting-app
 
-`voting-app` no-frills, generic web app that allows users to create polls,
-vote on others' polls, and see results in chart form.  Created per specs
+`voting-app` is a no-frills, generic web app that allows users to create polls,
+vote on others' polls, and see results in bar chart form.  Created per specs
 at [FreeCodeCamp].
 
 #### Features
@@ -11,8 +11,8 @@ at [FreeCodeCamp].
 - Authenticated and unauthenticated users can vote on any poll.
 - User votes are recorded on the server as well as locally in session data
 to minimize multiple votes per user on the same poll.
-- Polls are displayed in charts powered by d3.js.
-- Users can share their polls on facebook and twitter.
+- Polls are displayed in charts powered by [d3.js].
+- Users can share their polls on Facebook and Twitter.
 
 #### Tech
 
@@ -36,3 +36,4 @@ A copy of the GPLv2 can be found in the file `COPYING`.
 [FreeCodeCamp]: <https://www.freecodecamp.com/challenges/build-a-voting-app>
 [Mongoose]: <http://mongoosejs.com/index.html>
 [Passport]: <http://passportjs.org/>
+[d3.js]: <https://d3js.org/>
