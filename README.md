@@ -1,8 +1,8 @@
 # voting-app
 
-`voting-app` is a no-frills, generic web app that allows users to create polls,
+`voting-app` is a web app that allows users to create polls,
 vote on others' polls, and see results in bar chart form.  Created per specs
-at [FreeCodeCamp].
+at [FreeCodeCamp] and currently hosted at [Heroku].
 
 #### Features
 
@@ -37,3 +37,4 @@ A copy of the GPLv2 can be found in the file `COPYING`.
 [Mongoose]: <http://mongoosejs.com/index.html>
 [Passport]: <http://passportjs.org/>
 [d3.js]: <https://d3js.org/>
+[Heroku]: <https://voting-app-sh.herokuapp.com>
